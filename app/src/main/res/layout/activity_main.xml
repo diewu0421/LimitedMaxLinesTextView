@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <com.example.zenglw.maxlinetextview.widget.LimitedLineTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/mltv"
+        android:text="阿斯顿发送到发生点开罚款圣诞节福利卡时间了开发大家了快速减肥打瞌睡的积分卡死机打发拉斯加对方立刻；爱的世界了开发阶段是快乐飞静安里看到司机反馈拉萨的激发了快速的解放路口；绝对实力开发技术的来看；房间爱离开谁；的加快升级的福利卡建设路口"/>
+</android.support.constraint.ConstraintLayout>
