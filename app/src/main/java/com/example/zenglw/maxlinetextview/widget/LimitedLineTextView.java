@@ -1,11 +1,14 @@
 package com.example.zenglw.maxlinetextview.widget;
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.NinePatch;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
@@ -35,6 +38,7 @@ public class LimitedLineTextView extends android.support.v7.widget.AppCompatText
     private Rect mRect;
     private Paint mPaint;
     private float mTvSize;
+    private int mHeight;
 
 
     public LimitedLineTextView(Context context) {
@@ -55,14 +59,19 @@ public class LimitedLineTextView extends android.support.v7.widget.AppCompatText
 //        setBackgroundDrawable(getResources().getDrawable(android.R.attr.selectableItemBackground));
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), android.R.attr.selectableItemBackground);
         setOnClickListener(this);
+//        setBackgroundColor(Color.RED);
         post(new Runnable() {
             @Override
             public void run() {
 //                Log.e(TAG, "run: length " + getText().length());
 //                     int view = getLastCharIndexForLimitTextView(LimitedLineTextView.this, getText().toString(), getMeasuredWidth(), 2);
 //                     Log.e(TAG, "run: index = " + view);
+                mHeight = getMeasuredHeight();
                 limitStringTo140(getText().toString(), LimitedLineTextView.this, getMeasuredWidth(), LimitedLineTextView.this);
-
+                int[] ints = measureTextViewHeight(LimitedLineTextView.this, getText().toString(), getMeasuredWidth(), 3);
+                Log.e(TAG, "run: lastIndex = " + ints[0] + "  height " + ints[1]);
+                getLayoutParams().height = ints[1];
+                requestLayout();
             }
         });
     }
@@ -174,7 +183,27 @@ public class LimitedLineTextView extends android.support.v7.widget.AppCompatText
 
     @Override
     public void onClick(View v) {
+        final int height = v.getMeasuredHeight();
+        Log.e(TAG, "onClick: height = " + height);
+
         setText(mDrawText);
+        ObjectAnimator animator = ObjectAnimator.ofFloat(this, "xxx", 0, 1).setDuration(300);
+        final int offset = mHeight - height;
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+
+
+                float value = (float) animation.getAnimatedValue();
+                int mfactor = (int) (value * offset);
+//                setHeight((int) (mfactor + height));
+                getLayoutParams().height = mfactor + height;
+                requestLayout();
+                Log.e(TAG, "onAnimationUpdate: value = " + value + "   mfactor = " + mfactor);
+            }
+        });
+        animator.start();
+
         //拟制到案
 //        setOnClickListener(null);
     }
